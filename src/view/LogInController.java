@@ -7,6 +7,8 @@ package view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -57,7 +59,16 @@ public class LogInController implements Initializable {
         // txtPassword.addEvenHandler(InputMethodEvent.INPUT_METHOD_TEXT
         // txtPassword.setOnKeyTyped(this::handleTextChanged);
         // Set control events handlers (if not set by FXML)
-        //txtUsuario.textProperty().addListener(this::textChanged);
+       txtUsuario.textProperty().addListener(new ChangeListener<String>() {
+    @Override
+    public void changed(ObservableValue<? extends String> observable,
+            String oldValue, String newValue) {
+
+        btnIniciar.setDisable(false);
+    }
+
+        });
+       
         // Show primary window
         stage.show();
         
@@ -65,12 +76,12 @@ public class LogInController implements Initializable {
     private void handleWindowShowing(WindowEvent event){
         //logger.info("Beginning LoginController::handleWindowShowing");
         // El boton Aceptar se desabilita
-        btnIniciar.setDisable(false);
+        btnIniciar.setDisable(true);
     }
     
     private void textChanged(WindowEvent event){
         //logger.info("Beginning LoginController::handleWindowShowing");
-        // El boton Aceptar se desabilita
+        // El boton Aceptar se habilita
         btnIniciar.setDisable(false);
     }
     
