@@ -5,7 +5,6 @@
  */
 package javafxapplication;
 
-import com.sun.javaws.Main;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -27,7 +26,7 @@ public class JavaFXApplication extends Application {
     public void start(Stage primaryStage) {
          try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(JavaFXApplication.class.getResource("/view/LogIn.fxml"));
+            loader.setLocation(JavaFXApplication.class.getResource("/view/SignUp.fxml"));
             // Cargo la ventana
             Pane ventana = (Pane) loader.load();
  

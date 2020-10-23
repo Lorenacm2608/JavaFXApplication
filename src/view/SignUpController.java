@@ -24,15 +24,18 @@ public class SignUpController implements Initializable {
     /**
      * Initializes the controller class.
      */
-     @FXML
+
+    @FXML
         private TextField txtUsername;
     @FXML
         private TextField txtEmail;
     @FXML
         private TextField txtNombre;
+    
     @FXML
         private PasswordField txtContrasena;
     @FXML
+    
         private Button btnRegistrar;
     @FXML
         private Button btnCancelar;
@@ -44,6 +47,8 @@ public class SignUpController implements Initializable {
         private Label lblNombre;
     @FXML
         private Label lblContrasena;
+
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
