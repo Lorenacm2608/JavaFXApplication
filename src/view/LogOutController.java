@@ -35,13 +35,14 @@ public class LogOutController implements Initializable {
         private Button btnVolver;
     @FXML
         private Label lblSaludo;
+    /*
     @FXML
     private void VolverVentanaLogin(ActionEvent event) throws IOException{
      Parent root = FXMLLoader.load(getClass().getResource("view.LogIn.fxml"));
      Scene scene = new Scene(root);
      stage.setScene(scene);
      stage.show();
-}
+}*/
     public void initStage(Parent ventana){
         Scene scene = new Scene (ventana);
         stage.setScene(scene);
