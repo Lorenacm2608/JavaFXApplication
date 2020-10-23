@@ -9,17 +9,24 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Hyperlink;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
  *
- * @author 2dam
+ * @author Moroni
  */
 public class LogInController implements Initializable {
 
+    private Stage stage;
+    private Object logger;
     /**
      * Initializes the controller class.
      */
@@ -29,7 +36,43 @@ public class LogInController implements Initializable {
         private PasswordField txtContrasena;
     @FXML
         private Button btnIniciar;
+    @FXML
+        private Hyperlink hlRegistrarse;
     
+    /**
+     *
+     * @param ventana
+     */
+    public void initStage(Parent ventana){
+        //logger.info("Initializing Login stage");
+        // Create a scene associated to the node graph root
+        Scene scene =new Scene(ventana);
+        // Asociate scene to primaryStage(Window)
+        stage.setScene(scene);
+        // Set window properties
+        stage.setTitle("Login");
+        stage.setResizable(false);
+        // Set window's events handlers
+        stage.setOnShowing(this::handleWindowShowing);
+        // txtPassword.addEvenHandler(InputMethodEvent.INPUT_METHOD_TEXT
+        // txtPassword.setOnKeyTyped(this::handleTextChanged);
+        // Set control events handlers (if not set by FXML)
+        //txtUsuario.textProperty().addListener(this::textChanged);
+        // Show primary window
+        stage.show();
+        
+    }
+    private void handleWindowShowing(WindowEvent event){
+        //logger.info("Beginning LoginController::handleWindowShowing");
+        // El boton Aceptar se desabilita
+        btnIniciar.setDisable(false);
+    }
+    
+    private void textChanged(WindowEvent event){
+        //logger.info("Beginning LoginController::handleWindowShowing");
+        // El boton Aceptar se desabilita
+        btnIniciar.setDisable(false);
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -37,5 +80,9 @@ public class LogInController implements Initializable {
         
         
     }    
+
+    public void setStage(Stage primaryStage) {
+        stage=primaryStage;
+    }
     
 }
