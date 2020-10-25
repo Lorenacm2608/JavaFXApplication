@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="pnRegistrar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpController">
+<Pane fx:id="pnRegistrar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.SignUpController">
    <children>
       <Button fx:id="btnRegistrar" layoutX="473.0" layoutY="383.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Registrar">
          <font>
@@ -62,5 +62,7 @@
       <PasswordField fx:id="txtContrasena" layoutX="200.0" layoutY="276.0" prefHeight="25.0" prefWidth="200.0" />
       <PasswordField fx:id="txtConfirmarContrasena" layoutX="200.0" layoutY="330.0" prefHeight="25.0" prefWidth="200.0" />
       <Label fx:id="lblConfirmarContrasena" layoutX="200.0" layoutY="301.0" prefHeight="17.0" prefWidth="200.0" text="Confirmar Contraseña" />
+      <Label fx:id="lblEmailIncorrecto" layoutX="473.0" layoutY="166.0" text="Email incorrecto" textFill="RED" />
+      <Label fx:id="lblContrasenaIncorrecta" layoutX="473.0" layoutY="334.0" text="Contraseña incorrecta" textFill="RED" />
    </children>
 </Pane>

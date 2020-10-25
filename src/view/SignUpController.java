@@ -5,6 +5,9 @@
  */
 package view;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +18,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import validar.Validar;
 
 
 /**
@@ -22,7 +28,7 @@ import javafx.beans.value.ObservableValue;
  * @author 2dam
  */
 public class SignUpController {
-    
+    private static final Logger logger = Logger.getLogger("view.SignUpController");
     @FXML
         private TextField txtUsername;
     @FXML
@@ -47,6 +53,10 @@ public class SignUpController {
         private Label lblNombre;
     @FXML
         private Label lblContrasena;
+    @FXML
+        private Label lblEmailIncorrecto;
+    @FXML
+        private Label lblContrasenancorrecto;
     
     private Stage stage = new Stage();
     private Usuario usuario;
@@ -83,7 +93,8 @@ public class SignUpController {
         // txtContrasena.addEvenHandler(InputMethodEvent.INPUT_METHOD_TEXT
         // txtContrasena.setOnKeyTyped(this::handleTextChanged);
         // Set control events handlers (if not set by FXML)
-
+        btnRegistrar.setOnAction(this::btnRegistrarClick);
+        btnCancelar.setOnAction(this::hlCancerClick);
        txtContrasena.textProperty().addListener(this::txtChanged);
         // Show primary window
         stage.show();
@@ -96,7 +107,7 @@ public class SignUpController {
         // El boton Aceptar se desabilita
         //txtUsername.setPromptText("Introduzca el nombre de usuario... ");
         //txtContrasena.setPromptText("Introduzca la contraseña... ");
-
+        
     }
 
     private void txtChanged(ObservableValue observable, String oldValue, String newValue){
@@ -109,5 +120,39 @@ public class SignUpController {
         }
 
     }
-    
+    private void hlCancerClick(ActionEvent event){
+          logger.info("Ventana LogIn");
+        try{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn.fxml"));
+            
+            Parent root  = (Parent)loader.load();
+            
+             LogInController controller= ((LogInController)loader.getController());
+            //controller.setUsuario(usuario);
+             controller.initStage(root);
+            stage.hide();
+             } catch (IOException e) {
+                 logger.severe("Alerta");
+    }
+    }
+      private void btnRegistrarClick(ActionEvent event){
+        logger.info("Ventana LogOut");
+        boolean isValidEmail = Validar.isValidEmail(txtEmail, lblEmailIncorrecto, "Email invalido!");
+        if(isValidEmail){
+            lblEmailIncorrecto.setText("Email valido");
+        }
+        
+        try{
+            
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
+            
+            Parent root  = (Parent)loader.load();
+            
+             LogOutController controller= ((LogOutController)loader.getController());
+             controller.initStage(root);
+            stage.hide();
+             } catch (IOException e) {
+                 logger.severe("Alerta");
+    }
+}
 }
