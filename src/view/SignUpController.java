@@ -7,7 +7,6 @@ package view;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -56,7 +55,23 @@ public class SignUpController {
     @FXML
         private Label lblEmailIncorrecto;
     @FXML
-        private Label lblContrasenancorrecto;
+        private Label lblContrasenaIncorrecta;
+    @FXML
+        private Label lblNocoinciden;
+    @FXML
+        private Label lblUCaracter;
+    @FXML
+        private Label lblECaracter;
+    @FXML
+        private Label lblNCaracter;
+    @FXML
+        private Label lblCCaracter;
+    @FXML
+        private Label lblCCCaracter;
+    @FXML
+        private Label lblUsuarioIncorrecto;
+    @FXML
+        private Label lblNombreIncorrecto;
     
     private Stage stage = new Stage();
     private Usuario usuario;
@@ -96,6 +111,8 @@ public class SignUpController {
         btnRegistrar.setOnAction(this::btnRegistrarClick);
         btnCancelar.setOnAction(this::hlCancerClick);
        txtContrasena.textProperty().addListener(this::txtChanged);
+       txtConfirmarContrasena.textProperty().addListener(this::txtChanged);
+      
         // Show primary window
         stage.show();
 
@@ -103,6 +120,11 @@ public class SignUpController {
        private void handleWindowShowing(WindowEvent event){
 
         btnRegistrar.setDisable(true);
+        lblEmailIncorrecto.setVisible(false);
+        lblContrasenaIncorrecta.setVisible(false);
+        lblNombreIncorrecto.setVisible(false);
+        lblNocoinciden.setVisible(false);
+        lblUsuarioIncorrecto.setVisible(false);
         //logger.info("Beginning LoginController::handleWindowShowing");
         // El boton Aceptar se desabilita
         //txtUsername.setPromptText("Introduzca el nombre de usuario... ");
@@ -112,10 +134,10 @@ public class SignUpController {
 
     private void txtChanged(ObservableValue observable, String oldValue, String newValue){
 
-        if(!newValue.trim().equals("")){
+        if(/*!newValue.trim().equals("")*/!txtUsername.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")&& !txtEmail.getText().trim().equals("")&& !txtNombre.getText().trim().equals("")&& !txtConfirmarContrasena.getText().trim().equals("") ){
             btnRegistrar.setDisable(false);
         }
-        if (!oldValue.trim().equals("") ){
+        if (/*newValue.trim().equals("")*/ txtUsername.getText().trim().equals("")&& txtContrasena.getText().trim().equals("")&& txtEmail.getText().trim().equals("")&& txtNombre.getText().trim().equals("")&& txtConfirmarContrasena.getText().trim().equals("") ){
             btnRegistrar.setDisable(true);
         }
 
@@ -140,8 +162,13 @@ public class SignUpController {
         boolean isValidEmail = Validar.isValidEmail(txtEmail, lblEmailIncorrecto, "Email invalido!");
         if(isValidEmail){
             lblEmailIncorrecto.setText("Email valido");
+        }else{
+            lblEmailIncorrecto.setVisible(true);
         }
-        
+        boolean isValidContrasena = Validar.isValidContrasena(txtContrasena, txtConfirmarContrasena, lblNocoinciden, "No coinciden");
+        if(isValidContrasena){
+            lblNocoinciden.setText("Contraseña valida");
+        }
         try{
             
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
