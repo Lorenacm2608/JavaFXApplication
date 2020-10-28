@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +23,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import validar.Validar;
 
 /**
  * FXML Controller class
@@ -34,6 +34,7 @@ public class LogInController implements Initializable {
 
     private Stage stage;
     private static final Logger logger = Logger.getLogger("view.LogInController");
+    private final int  treinta = 30;
     /**
      * Initializes the controller class.
      */
@@ -45,8 +46,6 @@ public class LogInController implements Initializable {
     private Button btnIniciar;
     @FXML
     private Label lblerrorusuario;
-    @FXML
-    private Label lblErrorcontrasena;
     @FXML
     private Hyperlink hlRegistrarse;
 
@@ -74,30 +73,8 @@ public class LogInController implements Initializable {
         // txtContrasena.addEvenHandler(InputMethodEvent.INPUT_METHOD_TEXT
         // txtContrasena.setOnKeyTyped(this::handleTextChanged);
         // Set control events handlers (if not set by FXML)
-        txtUsuario.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-
-                if (newValue.trim().equals("")) {
-                    btnIniciar.setDisable(true);
-                }
-
-            }
-        });
-        txtContrasena.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable,
-                    String oldValue, String newValue) {
-                if (!newValue.trim().equals("") && !txtUsuario.getText().trim().equals("")) {
-                    btnIniciar.setDisable(false);
-                }
-                if (newValue.trim().equals("") || txtUsuario.getText().trim().equals("")) {
-                    btnIniciar.setDisable(true);
-                }
-            }
-
-        });
+        txtUsuario.textProperty().addListener(this::txtChanged);
+        txtContrasena.textProperty().addListener(this::txtChanged);
 
         // Show primary window
         stage.show();
@@ -111,7 +88,6 @@ public class LogInController implements Initializable {
         btnIniciar.setDisable(true);
         
         lblerrorusuario.setVisible(false);
-        lblErrorcontrasena.setVisible(false);
         //txtUsuario.setPromptText("Introduzca el nombre de usuario... ");
         //txtContrasena.setPromptText("Introduzca la contraseña... ");
     }
@@ -130,6 +106,27 @@ public class LogInController implements Initializable {
         stage = primaryStage;
     }
 
+    private void txtChanged(ObservableValue observable, String oldValue, String newValue){
+        
+        
+        if(!txtUsuario.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")){
+            boolean isValidUsuario = Validar.isValidUsuario(txtUsuario,lblerrorusuario,"usuario invalido","usuario valido");
+            lblerrorusuario.setVisible(true);
+            Validar.addTextLimiter(txtUsuario, treinta);
+            Validar.addTextLimiterPass(txtContrasena, treinta);
+            if(isValidUsuario)
+            btnIniciar.setDisable(false);
+            else
+            btnIniciar.setDisable(true);
+        }
+        if (txtUsuario.getText().trim().equals("")|| txtContrasena.getText().trim().equals("")){
+            
+            btnIniciar.setDisable(true);
+            
+        }
+
+    }
+    
     private void btnIniciarClick(ActionEvent event) {
         logger.info("Ventana LogOut");
         Usuario usuario = new Usuario();
