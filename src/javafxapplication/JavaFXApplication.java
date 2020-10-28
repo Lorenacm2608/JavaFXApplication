@@ -5,7 +5,6 @@
  */
 package javafxapplication;
 
-import com.sun.javaws.Main;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
