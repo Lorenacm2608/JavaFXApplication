@@ -33,36 +33,40 @@ import javafx.stage.WindowEvent;
 public class LogInController implements Initializable {
 
     private Stage stage;
-    private static final Logger logger = Logger.getLogger("view.LogInController"); 
+    private static final Logger logger = Logger.getLogger("view.LogInController");
     /**
      * Initializes the controller class.
      */
     @FXML
-        private TextField txtUsuario;
+    private TextField txtUsuario;
     @FXML
-        private PasswordField txtContrasena;
+    private PasswordField txtContrasena;
     @FXML
-        private Button btnIniciar;
+    private Button btnIniciar;
     @FXML
-        private Label lblerrorusuario;
+    private Label lblerrorusuario;
     @FXML
-        private Label lblErrorcontrasena;
+    private Label lblErrorcontrasena;
     @FXML
-        private Hyperlink hlRegistrarse;
-    
+    private Hyperlink hlRegistrarse;
+
     /**
      *
      * @param ventana
      */
-    public void initStage(Parent ventana){
+    public void initStage(Parent ventana) {
         logger.info("Initializing Login stage");
+        
         // Create a scene associated to the node graph root
-        Scene scene =new Scene(ventana);
+        Scene scene = new Scene(ventana);
+        
         // Asociate scene to primaryStage(Window)
         stage.setScene(scene);
+        
         // Set window properties
         stage.setTitle("Login");
         stage.setResizable(false);
+        
         // Set window's events handlers
         stage.setOnShowing(this::handleWindowShowing);
         btnIniciar.setOnAction(this::btnIniciarClick);
@@ -71,87 +75,102 @@ public class LogInController implements Initializable {
         // txtContrasena.setOnKeyTyped(this::handleTextChanged);
         // Set control events handlers (if not set by FXML)
         txtUsuario.textProperty().addListener(new ChangeListener<String>() {
-    @Override
-    public void changed(ObservableValue<? extends String> observable,
-            String oldValue, String newValue) {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
 
-        if (newValue.trim().equals("")){
-            btnIniciar.setDisable(true);
-        }
-        
-    }
+                if (newValue.trim().equals("")) {
+                    btnIniciar.setDisable(true);
+                }
+
+            }
         });
-       txtContrasena.textProperty().addListener(new ChangeListener<String>() {
-    @Override
-    public void changed(ObservableValue<? extends String> observable,
-            String oldValue, String newValue) {
-
-        if(!newValue.trim().equals("") && !txtUsuario.getText().trim().equals("")){
-            btnIniciar.setDisable(false);
-        }
-        if (newValue.trim().equals("") || txtUsuario.getText().trim().equals("")){
-            btnIniciar.setDisable(true);
-        }
-    }
+        txtContrasena.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+                if (!newValue.trim().equals("") && !txtUsuario.getText().trim().equals("")) {
+                    btnIniciar.setDisable(false);
+                }
+                if (newValue.trim().equals("") || txtUsuario.getText().trim().equals("")) {
+                    btnIniciar.setDisable(true);
+                }
+            }
 
         });
-       
+
         // Show primary window
         stage.show();
-        
+
     }
-    private void handleWindowShowing(WindowEvent event){
+
+    private void handleWindowShowing(WindowEvent event) {
         logger.info("Beginning LoginController::handleWindowShowing");
+        
         // El boton Aceptar se desabilita
         btnIniciar.setDisable(true);
+        
         lblerrorusuario.setVisible(false);
         lblErrorcontrasena.setVisible(false);
         //txtUsuario.setPromptText("Introduzca el nombre de usuario... ");
         //txtContrasena.setPromptText("Introduzca la contraseña... ");
     }
-    
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        
-    }    
+
+    public Stage getStage(Stage primaryStage) {
+        return this.stage;
+    }
 
     public void setStage(Stage primaryStage) {
-        stage=primaryStage;
+        stage = primaryStage;
     }
-    private void btnIniciarClick(ActionEvent event){
+
+    private void btnIniciarClick(ActionEvent event) {
         logger.info("Ventana LogOut");
-        Usuario usuario= new Usuario();
+        Usuario usuario = new Usuario();
         usuario.setNombre(txtUsuario.getText());
-        try{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
+        try {
+            // Cargo la ventana
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
+
+            Parent root = (Parent) loader.load();
             
-            Parent root  = (Parent)loader.load();
+            // Cargo el controller
+            LogOutController controller = ((LogOutController) loader.getController());
             
-             LogOutController controller= ((LogOutController)loader.getController());
+            // Establecer  el controller y la muestro
             controller.setUsuario(usuario);
-             controller.initStage(root);
+            controller.initStage(root);
             stage.hide();
-             } catch (IOException e) {
-                 logger.severe("Alerta");
+            
+        } catch (IOException e) {
+            logger.severe("Alerta");
+        }
     }
-    }
-    private void hlRegistrarseClick(ActionEvent event){
+
+    private void hlRegistrarseClick(ActionEvent event) {
         logger.info("Ventana SignUp");
         //Usuario usuario= new Usuario();
         //usuario.setNombre(txtUsuario.getText());
-        try{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUp.fxml"));
+        try {
+            // Cargo la ventana
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/SignUp.fxml"));
+
+            Parent root = (Parent) loader.load();
+
+            // Cargo el controller
+            SignUpController controller = ((SignUpController) loader.getController());
             
-            Parent root  = (Parent)loader.load();
-            
-             SignUpController controller= ((SignUpController)loader.getController());
+            // Establecer  el controller y la muestro
             //controller.setUsuario(usuario);
-             controller.initStage(root);
+            controller.initStage(root);
             stage.hide();
-             } catch (IOException e) {
-                 logger.severe("Alerta");
+        } catch (IOException e) {
+            logger.severe("Alerta");
+        }
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
