@@ -132,17 +132,31 @@ public class SignUpController {
     }
 
     private void txtChanged(ObservableValue observable, String oldValue, String newValue){
-        
-        
-        if(!txtUsuario.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")&& !txtEmail.getText().trim().equals("")&& !txtNombre.getText().trim().equals("")&& !txtConfirmarContrasena.getText().trim().equals("") ){
-            
+  
             Validar.addTextLimiter(txtUsuario, treinta);
             Validar.addTextLimiterPass(txtContrasena, treinta);
             Validar.addTextLimiterGrande(txtEmail, cincuenta);
             Validar.addTextLimiterGrande(txtNombre, cincuenta);
             Validar.addTextLimiterPass(txtConfirmarContrasena, treinta);
-            btnRegistrar.setDisable(false);
             
+            
+        if(!txtUsuario.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")&& !txtEmail.getText().trim().equals("")&& !txtNombre.getText().trim().equals("")&& !txtConfirmarContrasena.getText().trim().equals("") ){
+            boolean isValidEmail = Validar.isValidEmail(txtEmail, lblEmailIncorrecto, "Email invalido!", "Email valido");
+            lblEmailIncorrecto.setVisible(true);
+
+            boolean isValidContrasena = Validar.isValidContrasena(txtContrasena, txtConfirmarContrasena, lblNocoinciden, "No coinciden", "Coinciden");
+            lblNocoinciden.setVisible(true);
+
+            boolean isValidUsuario = Validar.isValid(txtUsuario, lblUsuarioError, "Usuario invalido!", "Usuario valido");
+            lblUsuarioError.setVisible(true);
+
+            boolean isValidNombre = Validar.isValid(txtNombre, lblNombreError, "Nombre invalido!", "Nombre valido");
+            lblNombreError.setVisible(true);
+            
+            if(isValidEmail && isValidContrasena && isValidUsuario && isValidNombre)
+                btnRegistrar.setDisable(false);
+            else
+                btnRegistrar.setDisable(true);
         }
         if (txtUsuario.getText().trim().equals("")|| txtContrasena.getText().trim().equals("")|| txtEmail.getText().trim().equals("")|| txtNombre.getText().trim().equals("")|| txtConfirmarContrasena.getText().trim().equals("") ){
             
@@ -168,13 +182,8 @@ public class SignUpController {
     }
       private void btnRegistrarClick(ActionEvent event){
         logger.info("Ventana LogOut");
-        boolean isValidEmail = Validar.isValidEmail(txtEmail, lblEmailIncorrecto, "Email invalido!", "Email valido");
-        lblEmailIncorrecto.setVisible(true);
-
-        
-        boolean isValidContrasena = Validar.isValidContrasena(txtContrasena, txtConfirmarContrasena, lblNocoinciden, "No coinciden", "Coinciden");
-            lblNocoinciden.setVisible(true);
-        
+        usuario= new Usuario();
+        usuario.setNombre(txtUsuario.getText());
         try{
             
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
@@ -182,6 +191,7 @@ public class SignUpController {
             Parent root  = (Parent)loader.load();
             
              LogOutController controller= ((LogOutController)loader.getController());
+             controller.setUsuario(usuario);
              controller.initStage(root);
             stage.hide();
              } catch (IOException e) {

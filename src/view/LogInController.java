@@ -18,12 +18,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
+import validar.Validar;
 
 /**
  * FXML Controller class
@@ -31,7 +33,8 @@ import javafx.stage.WindowEvent;
  * @author 2dam
  */
 public class LogInController  {
-private static final Logger logger = Logger.getLogger("view.LogInController");
+    private static final Logger logger = Logger.getLogger("view.LogInController");
+    private final int  treinta = 30;
     /**
      * Initializes the controller class.
      */
@@ -43,6 +46,8 @@ private static final Logger logger = Logger.getLogger("view.LogInController");
         private Button btnIniciar;
     @FXML
         private Hyperlink hlRegistrarse;
+    @FXML
+        private Label lblerrorusuario;
     
     
     private Stage stage=new Stage();
@@ -79,8 +84,10 @@ private static final Logger logger = Logger.getLogger("view.LogInController");
      */
     private void handleWindowShowing(WindowEvent event){
        btnIniciar.setDisable(true);
-       txtUsuario.setPromptText("Introduzca el nombre de usuario... ");
-       txtContrasena.setPromptText("Introduzca la contraseña... ");
+       lblerrorusuario.setVisible(false);
+       //txtUsuario.setPromptText("Introduzca el nombre de usuario... ");
+       //txtContrasena.setPromptText("Introduzca la contraseña... ");
+       logger.info("Beginning LoginController::handleWindowShowing");
     }
     //Importante Preguntar a Javi
     /**
@@ -90,13 +97,23 @@ private static final Logger logger = Logger.getLogger("view.LogInController");
      * @param newValue 
      */
     private void txtChanged(ObservableValue observable, String oldValue, String newValue){
-        if(/*!newValue.trim().equals("")&&*/ !txtUsuario.getText().trim().equals("")&& !txtContrasena.getText().trim().equals("") ){
+         if(!txtUsuario.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")){
+            boolean isValidUsuario = Validar.isValid(txtUsuario,lblerrorusuario,"usuario invalido","usuario valido");
+            lblerrorusuario.setVisible(true);
+            Validar.addTextLimiter(txtUsuario, treinta);
+            Validar.addTextLimiterPass(txtContrasena, treinta);
+            if(isValidUsuario){
             btnIniciar.setDisable(false);
-        }
-        if (/*!oldValue.trim().equals("") ||*/ txtUsuario.getText().trim().equals("")|| txtContrasena.getText().trim().equals("")){
+            }else{
             btnIniciar.setDisable(true);
+            
+            }
         }
-        
+        if (txtUsuario.getText().trim().equals("")|| txtContrasena.getText().trim().equals("")){
+            
+            btnIniciar.setDisable(true);
+            
+        }
     }
     /**
      * 

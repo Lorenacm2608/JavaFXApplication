@@ -27,11 +27,9 @@ public class Validar {
     public static boolean isValidEmail(TextField tf, Label lb, String errorMessage, String noError){
         boolean b=true;
         String msg = null;
-        tf.getStyleClass().remove("error");
         if(!IsValidEmail (tf)){
             b=false;
             msg = errorMessage;
-            tf.getStyleClass().add("error");
         }else{
             msg = noError;
         }
@@ -76,4 +74,24 @@ public class Validar {
             }
     }
     
+    public static boolean IsValid(TextField tf){
+        boolean b=false;
+        String pattern = "^[a-zA-Z0-9]+$";
+        if(tf.getText().matches(pattern)){
+            b=true;
+        }
+        return b;
+    }
+    public static boolean isValid(TextField tf, Label lb, String errorMessage, String noError){
+        boolean b=true;
+        String msg = null;
+        if(!IsValid (tf)){
+            b=false;
+            msg = errorMessage;
+        }else{
+            msg = noError;
+        }
+        lb.setText(msg);
+        return b;
+    }
 }
