@@ -7,6 +7,7 @@ package view;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,8 +29,11 @@ import validar.Validar;
  */
 public class SignUpController {
     private static final Logger logger = Logger.getLogger("view.SignUpController");
+    
+    private final int  treinta = 30;
+    private final int cincuenta = 50;
     @FXML
-        private TextField txtUsername;
+        private TextField txtUsuario;
     @FXML
         private TextField txtEmail;
     @FXML
@@ -55,23 +59,12 @@ public class SignUpController {
     @FXML
         private Label lblEmailIncorrecto;
     @FXML
-        private Label lblContrasenaIncorrecta;
-    @FXML
         private Label lblNocoinciden;
     @FXML
-        private Label lblUCaracter;
+        private Label lblUsuarioError;
     @FXML
-        private Label lblECaracter;
-    @FXML
-        private Label lblNCaracter;
-    @FXML
-        private Label lblCCaracter;
-    @FXML
-        private Label lblCCCaracter;
-    @FXML
-        private Label lblUsuarioIncorrecto;
-    @FXML
-        private Label lblNombreIncorrecto;
+        private Label lblNombreError;
+    
     
     private Stage stage = new Stage();
     private Usuario usuario;
@@ -110,9 +103,16 @@ public class SignUpController {
         // Set control events handlers (if not set by FXML)
         btnRegistrar.setOnAction(this::btnRegistrarClick);
         btnCancelar.setOnAction(this::hlCancerClick);
+       
+       // addTextLimiter(txtEmail, treinta);
+       txtUsuario.textProperty().addListener(this::txtChanged);
+       txtEmail.textProperty().addListener(this::txtChanged);
+       txtNombre.textProperty().addListener(this::txtChanged);
        txtContrasena.textProperty().addListener(this::txtChanged);
        txtConfirmarContrasena.textProperty().addListener(this::txtChanged);
-      
+       
+       
+       
         // Show primary window
         stage.show();
 
@@ -121,10 +121,9 @@ public class SignUpController {
 
         btnRegistrar.setDisable(true);
         lblEmailIncorrecto.setVisible(false);
-        lblContrasenaIncorrecta.setVisible(false);
-        lblNombreIncorrecto.setVisible(false);
         lblNocoinciden.setVisible(false);
-        lblUsuarioIncorrecto.setVisible(false);
+        lblUsuarioError.setVisible(false);
+        lblNombreError.setVisible(false);
         //logger.info("Beginning LoginController::handleWindowShowing");
         // El boton Aceptar se desabilita
         //txtUsername.setPromptText("Introduzca el nombre de usuario... ");
@@ -133,12 +132,22 @@ public class SignUpController {
     }
 
     private void txtChanged(ObservableValue observable, String oldValue, String newValue){
-
-        if(/*!newValue.trim().equals("")*/!txtUsername.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")&& !txtEmail.getText().trim().equals("")&& !txtNombre.getText().trim().equals("")&& !txtConfirmarContrasena.getText().trim().equals("") ){
+        
+        
+        if(!txtUsuario.getText().trim().equals("") && !txtContrasena.getText().trim().equals("")&& !txtEmail.getText().trim().equals("")&& !txtNombre.getText().trim().equals("")&& !txtConfirmarContrasena.getText().trim().equals("") ){
+            
+            Validar.addTextLimiter(txtUsuario, treinta);
+            Validar.addTextLimiterPass(txtContrasena, treinta);
+            Validar.addTextLimiterGrande(txtEmail, cincuenta);
+            Validar.addTextLimiterGrande(txtNombre, cincuenta);
+            Validar.addTextLimiterPass(txtConfirmarContrasena, treinta);
             btnRegistrar.setDisable(false);
+            
         }
-        if (/*newValue.trim().equals("")*/ txtUsername.getText().trim().equals("")&& txtContrasena.getText().trim().equals("")&& txtEmail.getText().trim().equals("")&& txtNombre.getText().trim().equals("")&& txtConfirmarContrasena.getText().trim().equals("") ){
+        if (txtUsuario.getText().trim().equals("")|| txtContrasena.getText().trim().equals("")|| txtEmail.getText().trim().equals("")|| txtNombre.getText().trim().equals("")|| txtConfirmarContrasena.getText().trim().equals("") ){
+            
             btnRegistrar.setDisable(true);
+            
         }
 
     }
@@ -159,16 +168,13 @@ public class SignUpController {
     }
       private void btnRegistrarClick(ActionEvent event){
         logger.info("Ventana LogOut");
-        boolean isValidEmail = Validar.isValidEmail(txtEmail, lblEmailIncorrecto, "Email invalido!");
-        if(isValidEmail){
-            lblEmailIncorrecto.setText("Email valido");
-        }else{
-            lblEmailIncorrecto.setVisible(true);
-        }
-        boolean isValidContrasena = Validar.isValidContrasena(txtContrasena, txtConfirmarContrasena, lblNocoinciden, "No coinciden");
-        if(isValidContrasena){
-            lblNocoinciden.setText("Contraseña valida");
-        }
+        boolean isValidEmail = Validar.isValidEmail(txtEmail, lblEmailIncorrecto, "Email invalido!", "Email valido");
+        lblEmailIncorrecto.setVisible(true);
+
+        
+        boolean isValidContrasena = Validar.isValidContrasena(txtContrasena, txtConfirmarContrasena, lblNocoinciden, "No coinciden", "Coinciden");
+            lblNocoinciden.setVisible(true);
+        
         try{
             
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
@@ -182,4 +188,15 @@ public class SignUpController {
                  logger.severe("Alerta");
     }
 }
+     /*public static void addTextLimiter(final TextField tf, final int maxLength) {
+    tf.textProperty().addListener(new ChangeListener<String>() {
+        @Override
+        public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+            if (tf.getText().length() > maxLength) {
+                String s = tf.getText().substring(0, maxLength);
+                tf.setText(s);
+            }
+        }
+    });
+}*/
 }
