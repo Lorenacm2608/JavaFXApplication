@@ -52,13 +52,13 @@ public class LogInController implements Initializable {
 
     /**
      *
-     * @param ventana
+     * @param root
      */
-    public void initStage(Parent ventana) {
+    public void initStage(Parent root) {
         logger.info("Initializing Login stage");
         
         // Create a scene associated to the node graph root
-        Scene scene = new Scene(ventana);
+        Scene scene = new Scene(root);
         
         // Asociate scene to primaryStage(Window)
         stage.setScene(scene);
@@ -115,6 +115,12 @@ public class LogInController implements Initializable {
         //txtUsuario.setPromptText("Introduzca el nombre de usuario... ");
         //txtContrasena.setPromptText("Introduzca la contraseña... ");
     }
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+        
+    } 
 
     public Stage getStage(Stage primaryStage) {
         return this.stage;
@@ -169,8 +175,5 @@ public class LogInController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 }
