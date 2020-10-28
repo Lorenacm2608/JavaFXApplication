@@ -8,6 +8,7 @@ package view;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,6 +66,7 @@ private static final Logger logger = Logger.getLogger("view.LogInController");
         stage.setOnShowing(this::handleWindowShowing);
         btnIniciar.setOnAction(this::btnIniciarClick);
         btnIniciar.setTooltip(new Tooltip("Pulse para iniciar sesion "));
+        
         txtUsuario.textProperty().addListener(this::txtChanged);
         txtContrasena.textProperty().addListener(this::txtChanged);
         hlRegistrarse.setOnAction(this::hlRegistrarseClick);
@@ -134,4 +136,5 @@ private static final Logger logger = Logger.getLogger("view.LogInController");
                  logger.severe("Alerta");
     }
     }
+    
 }
