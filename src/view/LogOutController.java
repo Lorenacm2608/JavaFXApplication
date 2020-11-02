@@ -5,10 +5,13 @@
  */
 package view;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,6 +21,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import libreries.Usuario;
 
 /**
  * FXML Controller class
@@ -60,6 +64,7 @@ public class LogOutController  {
         stage.setResizable(false);
         logger.info("3");
         stage.setOnShowing(this::handleWindowShowing);
+        btnVolver.setOnAction(this::hlVolverClick);
         stage.show();
         logger.info("4");
         
@@ -68,6 +73,21 @@ public class LogOutController  {
       /* btnIniciar.setDisable(true);
        txtUsuario.setPromptText("Introduzca el nombre de usuario... ");
        txtContrasena.setPromptText("Introduzca la contraseña... ");*/
-         lblSaludo.setText("Usuario: "+usuario.getNombre());
+         lblSaludo.setText("Hola "+usuario.getUsuario());
+    }
+     private void hlVolverClick(ActionEvent event){
+          logger.info("Ventana LogIn");
+        try{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogIn.fxml"));
+            
+            Parent root  = (Parent)loader.load();
+            
+             LogInController controller= ((LogInController)loader.getController());
+            //controller.setUsuario(usuario);
+             controller.initStage(root);
+            stage.hide();
+             } catch (IOException e) {
+                 logger.severe("Alerta");
+    }
     }
 }
