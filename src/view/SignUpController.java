@@ -88,7 +88,6 @@ public class SignUpController {
         this.stage = stage;
     }
 
-
     public void initStage(Parent root) {
         // Create a scene associated to the node graph root
         Scene scene = new Scene(root);
@@ -124,7 +123,7 @@ public class SignUpController {
         lblEmailIncorrecto.setVisible(false);
         lblNocoinciden.setVisible(false);
         lblUsuarioError.setVisible(false);
-        lblNombreError.setVisible(false);    
+        lblNombreError.setVisible(false);
     }
 
     private void txtChanged(ObservableValue observable, String oldValue, String newValue) {
@@ -186,19 +185,25 @@ public class SignUpController {
         Signable signable = new SignableFactory().getSignableImplementation();
         Alert alert;
         try {
-            signable.signUp(usuario);
+            if (signable.signUp(usuario) != null) {;
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
 
-                Parent root;
-                root = (Parent) loader.load();
-                LogOutController controller = ((LogOutController) loader.getController());
-                controller.setUsuario(usuario);
-                controller.initStage(root);
-                stage.hide();
-            } catch (IOException ex) {
-                Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+                    Parent root;
+                    root = (Parent) loader.load();
+                    LogOutController controller = ((LogOutController) loader.getController());
+                    controller.setUsuario(usuario);
+                    controller.initStage(root);
+                    stage.hide();
+                } catch (IOException ex) {
+                    Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informacion");
+                alert.setHeaderText("En este momento no podemos atender tu solicitud. Por favor, inténtalo en unos instantes.");
+                alert.showAndWait();
             }
 
         } catch (EmailExistenteException ex) {
@@ -224,4 +229,3 @@ public class SignUpController {
         }
     }
 }
-

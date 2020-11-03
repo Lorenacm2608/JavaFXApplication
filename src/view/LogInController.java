@@ -10,15 +10,12 @@ import exceptions.ErrorBDException;
 import exceptions.ErrorServerException;
 import exceptions.UsuarioNoEncontradoException;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -30,7 +27,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import libreries.Signable;
 import libreries.SignableFactory;
@@ -127,10 +123,8 @@ public class LogInController {
         if (txtUsuario.getText().trim().equals("") || txtContrasena.getText().trim().equals("")) {
 
             btnIniciar.setDisable(true);
-
         }
     }
-
     /**
      *
      * @param event
@@ -139,12 +133,12 @@ public class LogInController {
  private void btnIniciarClick(ActionEvent event) {
         logger.info("Ventana LogOut");
         usuario = new Usuario();
-        usuario.setUsuario(txtUsuario.getText().toString());
-        usuario.setContrasena(txtContrasena.getText().toString());
+        usuario.setUsuario(txtUsuario.getText());
+        usuario.setContrasena(txtContrasena.getText());
         Signable signable = new SignableFactory().getSignableImplementation();
         Alert alert;
         try {
-            signable.logIn(usuario);
+            if(signable.logIn(usuario)!=null){
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogOut.fxml"));
 
@@ -157,6 +151,12 @@ public class LogInController {
                 } catch (IOException e) {
                     logger.severe("Alerta");
                 }
+            } else {
+                alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Informacion");
+                alert.setHeaderText("En este momento no podemos atender tu solicitud. Por favor, inténtalo en unos instantes.");
+                alert.showAndWait();
+            }
         } catch (AutenticacionFallidaException ex) {
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
